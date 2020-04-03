@@ -1,11 +1,11 @@
 %define	oname		kImageAnnotator
-
+%define	major		%{version}
 %define libname		%mklibname %{name} %{major}
 %define develname	%mklibname %{name} -d
 
 Name:		kimageannotator
 Version:	0.2.1
-Release:	1
+Release:	2
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
@@ -60,7 +60,7 @@ Header files for development with %{name}.
 %files -n %{libname}
 %license LICENSE
 %doc CHANGELOG.md README.md
-%{_libdir}/lib%{oname}.so.%{version}
+%{_libdir}/lib%{oname}.so.%{major}
 
 %files -n %{develname}
 %doc CHANGELOG.md README.md
