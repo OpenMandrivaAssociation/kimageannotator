@@ -15,6 +15,7 @@ Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/%{oname}-%
 BuildRequires: cmake
 BuildRequires: qmake5
 BuildRequires: cmake(kColorPicker)
+BuildRequires: cmake(Qt5LinguistTools)
 BuildRequires: pkgconfig(Qt5Core)
 BuildRequires: pkgconfig(Qt5Gui)
 BuildRequires: pkgconfig(Qt5Svg)
