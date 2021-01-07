@@ -1,7 +1,7 @@
-%define	oname		kImageAnnotator
-%define	major		%{version}
-%define libname		%mklibname %{name} %{major}
-%define develname	%mklibname %{name} -d
+%define oname kImageAnnotator
+%define major %{version}
+%define libname %mklibname %{name} %{major}
+%define develname %mklibname %{name} -d
 
 Name:		kimageannotator
 Version:	0.4.0
