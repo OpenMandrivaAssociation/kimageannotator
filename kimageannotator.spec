@@ -63,6 +63,7 @@ Header files for development with %{name}.
 %license LICENSE
 %doc CHANGELOG.md README.md
 %{_libdir}/lib%{oname}.so.%{major}
+%{_libdir}/libkImageAnnotator.so.0
 %{_datadir}/kImageAnnotator/translations/kImageAnnotator_*.qm
 
 %files -n %{develname}
