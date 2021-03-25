@@ -1,18 +1,18 @@
 %define oname kImageAnnotator
-%define major %{version}
+%define major %(echo %{version} |cut -d. -f1)
 %define libname %mklibname %{name} %{major}
 %define develname %mklibname %{name} -d
 
 Name:		kimageannotator
 Version:	0.4.2
-Release:	1
+Release:	2
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
 URL:		https://github.com/ksnip/kImageAnnotator
 Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/%{oname}-%{version}.tar.gz
 
-BuildRequires: cmake
+BuildRequires: cmake ninja
 BuildRequires: qmake5
 BuildRequires: cmake(kColorPicker)
 BuildRequires: cmake(Qt5LinguistTools)
@@ -31,6 +31,9 @@ kImageAnnotator is a tool for annotating images.
 %package -n	%{libname}
 Summary:	Tool for annotating images
 Group:		System/Libraries
+# Fix bogus naming scheme from earlier builds
+%rename %mklibname %{name} 0.4.0
+%rename %mklibname %{name} 0.4.2
 
 %description -n	%{libname}
 kImageAnnotator is a tool for annotating images.
@@ -50,21 +53,23 @@ Header files for development with %{name}.
 
 %prep
 %autosetup -p1 -n %{oname}-%{version}
+%cmake \
+	-DBUILD_EXAMPLE=ON \
+	-G Ninja
 
 %build
-%cmake \
-	-DBUILD_EXAMPLE=ON
-%make_build
+%ninja_build -C build
 
 %install
-%make_install -C build
+%ninja_install -C build
+%find_lang %{name} --with-qt --all-name
 
-%files -n %{libname}
+%files -n %{libname} -f %{name}.lang
 %license LICENSE
 %doc CHANGELOG.md README.md
-%{_libdir}/lib%{oname}.so.%{major}
-%{_libdir}/libkImageAnnotator.so.0
-%{_datadir}/kImageAnnotator/translations/kImageAnnotator_*.qm
+%{_libdir}/lib%{oname}.so.%{major}*
+%dir %{_datadir}/kImageAnnotator
+%dir %{_datadir}/kImageAnnotator/translations
 
 %files -n %{develname}
 %doc CHANGELOG.md README.md
