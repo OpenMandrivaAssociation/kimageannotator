@@ -5,7 +5,7 @@
 
 Name:		kimageannotator
 Version:	0.5.0
-Release:	1
+Release:	2
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
