@@ -1,10 +1,11 @@
 %define oname kImageAnnotator
 %define major %(echo %{version} |cut -d. -f1)
-%define libname %mklibname %{name} %{major}
+%define oldlibname %mklibname %{name} 0
+%define libname %mklibname %{name}
 %define develname %mklibname %{name} -d
 
 Name:		kimageannotator
-Version:	0.5.1
+Version:	0.6.0
 Release:	1
 Summary:	Tool for annotating images
 License:	GPLv2+
@@ -34,6 +35,7 @@ Group:		System/Libraries
 # Fix bogus naming scheme from earlier builds
 %rename %mklibname %{name} 0.4.0
 %rename %mklibname %{name} 0.4.2
+%rename %{oldlibname}
 
 %description -n	%{libname}
 kImageAnnotator is a tool for annotating images.
@@ -45,6 +47,7 @@ Summary:	Development package for %{name}
 Group:		Development/C++
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Requires:	cmake(kColorPicker)
 
 %description -n	%{develname}
 Header files for development with %{name}.
