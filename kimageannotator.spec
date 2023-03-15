@@ -5,7 +5,7 @@
 %define develname %mklibname %{name} -d
 
 Name:		kimageannotator
-Version:	0.6.0
+Version:	0.6.1
 Release:	1
 Summary:	Tool for annotating images
 License:	GPLv2+
