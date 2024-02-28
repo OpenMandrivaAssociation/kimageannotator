@@ -1,0 +1,114 @@
+From 52ed4a9415310ea941aae480cbd777acc37842ac Mon Sep 17 00:00:00 2001
+From: Damir Porobic <damir_porobic@live.com>
+Date: Thu, 22 Feb 2024 20:57:32 +0100
+Subject: [PATCH] Fix crash when last tab is closed or key pressed without tab
+ #334
+
+---
+ CHANGELOG.md                         |  3 +++
+ CMakeLists.txt                       |  2 +-
+ README.md                            |  2 +-
+ src/common/filter/KeyEventFilter.cpp | 20 ++++++++++++--------
+ src/common/filter/KeyEventFilter.h   |  1 +
+ 5 files changed, 18 insertions(+), 10 deletions(-)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index f67863c0..527737c8 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -1,5 +1,8 @@
+ # Change log
+ 
++## Release 0.7.1
++* Fixed: Crash after pressing key when no tab exists or closing last tab. ([#271](https://github.com/ksnip/kImageAnnotator/issues/334))
++
+ ## Release 0.7.0
+ * New: Allow copying items between tabs. ([#318](https://github.com/ksnip/kImageAnnotator/issues/318))
+ * New: CTRL + A does not select all text typed. ([#198](https://github.com/ksnip/kImageAnnotator/issues/198))
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f55a3eae..c7aa95b2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ cmake_minimum_required(VERSION 3.5)
+-project(kImageAnnotator LANGUAGES CXX VERSION 0.7.0)
++project(kImageAnnotator LANGUAGES CXX VERSION 0.7.1)
+ 
+ set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+diff --git a/README.md b/README.md
+index 956b52c7..a413b8ba 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,7 @@
+ # kImageAnnotator [![Linux Build Status][github-badge-linux]][github-url-linux] [![Windows Build Status][github-badge-windows]][github-url-windows] [![Translation status][weblate-badge]][weblate-url]
+ Tool for annotating images
+ 
+-Version 0.7.0
++Version 0.7.1
+ 
+ ![kImageAnnotator](https://i.imgur.com/4vlPDUn.png "kImageAnnotator")
+ 
+diff --git a/src/common/filter/KeyEventFilter.cpp b/src/common/filter/KeyEventFilter.cpp
+index c3063f6f..ce1efbcd 100644
+--- a/src/common/filter/KeyEventFilter.cpp
++++ b/src/common/filter/KeyEventFilter.cpp
+@@ -32,11 +32,8 @@ KeyEventFilter::~KeyEventFilter()
+ 	QCoreApplication::instance()->removeEventFilter(this);
+ }
+ 
+-
+ void KeyEventFilter::setListener(IKeyEventListener *listener)
+ {
+-	Q_ASSERT(listener != nullptr);
+-
+ 	mKeyEventListener = listener;
+ }
+ 
+@@ -58,8 +55,9 @@ void KeyEventFilter::handleKeyReleased(QEvent *event)
+ 	if(mPressedKeyCodes.contains(keyEvent->key())) {
+ 		mPressedKeyCodes.removeAll(keyEvent->key());
+ 
+-		Q_ASSERT(mKeyEventListener != nullptr);
+-		mKeyEventListener->keyReleased(keyEvent);
++		if(isListenerSet()) {
++			mKeyEventListener->keyReleased(keyEvent);
++		}
+ 	}
+ }
+ 
+@@ -67,12 +65,18 @@ void KeyEventFilter::handleKeyPressed(QEvent *event)
+ {
+ 	auto keyEvent = dynamic_cast<QKeyEvent *>(event);
+ 
+-	if(!mPressedKeyCodes.contains(keyEvent->key())) {
++	if(isListenerSet() && !mPressedKeyCodes.contains(keyEvent->key())) {
+ 		mPressedKeyCodes.append(keyEvent->key());
+ 
+-		Q_ASSERT(mKeyEventListener != nullptr);
+-		mKeyEventListener->keyPressed(keyEvent);
++		if(isListenerSet()) {
++			mKeyEventListener->keyPressed(keyEvent);
++		}
+ 	}
+ }
+ 
++bool KeyEventFilter::isListenerSet()
++{
++	return mKeyEventListener != nullptr;
++}
++
+ } // namespace kImageAnnotator
+\ No newline at end of file
+diff --git a/src/common/filter/KeyEventFilter.h b/src/common/filter/KeyEventFilter.h
+index 90980cb4..ba09a9f4 100644
+--- a/src/common/filter/KeyEventFilter.h
++++ b/src/common/filter/KeyEventFilter.h
+@@ -46,6 +46,7 @@ class KeyEventFilter : public QObject
+ 
+ 	void handleKeyPressed(QEvent *event);
+ 	void handleKeyReleased(QEvent *event);
++	bool isListenerSet();
+ };
+ 
+ } // namespace kImageAnnotator

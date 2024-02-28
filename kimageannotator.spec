@@ -6,12 +6,13 @@
 
 Name:		kimageannotator
 Version:	0.7.0
-Release:	1
+Release:	2
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
 URL:		https://github.com/ksnip/kImageAnnotator
 Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/%{oname}-%{version}.tar.gz
+Patch0:		https://github.com/ksnip/kImageAnnotator/commit/52ed4a9415310ea941aae480cbd777acc37842ac.patch
 
 BuildRequires: cmake ninja
 BuildRequires: qmake5
