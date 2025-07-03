@@ -1,29 +1,15 @@
-%define oname kImageAnnotator
-%define major %(echo %{version} |cut -d. -f1)
-%define oldlibname %mklibname %{name} 0
-%define libname %mklibname %{name}
-%define develname %mklibname %{name} -d
-
-Name:		kimageannotator
-Version:	0.7.0
-Release:	2
+Name:		%{_lib}kImageAnnotator
+Version:	0.7.1
+Release:	1
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
 URL:		https://github.com/ksnip/kImageAnnotator
-Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/%{oname}-%{version}.tar.gz
-Patch0:		https://github.com/ksnip/kImageAnnotator/commit/52ed4a9415310ea941aae480cbd777acc37842ac.patch
+Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/kImageAnnotator-%{version}.tar.gz
+#Patch0:		https://github.com/ksnip/kImageAnnotator/commit/52ed4a9415310ea941aae480cbd777acc37842ac.patch
 
-BuildRequires: cmake ninja
-BuildRequires: qmake5
-BuildRequires: cmake(kColorPicker-Qt5)
-BuildRequires: cmake(Qt5LinguistTools)
-BuildRequires: pkgconfig(Qt5Core)
-BuildRequires: pkgconfig(Qt5Gui)
-BuildRequires: pkgconfig(Qt5Svg)
-BuildRequires: pkgconfig(Qt5Test)
-BuildRequires: pkgconfig(Qt5Widgets)
-BuildRequires: pkgconfig(x11)
+BuildSystem:	 cmake
+BuildOption:   -DBUILD_EXAMPLE=ON -DBUILD_WITH_QT6=ON
 
 BuildRequires: cmake(kColorPicker-Qt6)
 BuildRequires: cmake(Qt6Core)
@@ -33,36 +19,25 @@ BuildRequires: cmake(Qt6Test)
 BuildRequires: cmake(Qt6Widgets)
 BuildRequires: cmake(Qt6LinguistTools)
 
+%rename %name-Qt6
+
 %description
 kImageAnnotator is a tool for annotating images.
 
-#------------------------------------------------
+%package devel
 
-%prep
-%autosetup -p1 -n kImageAnnotator-%{version}
-%cmake \
-	-DBUILD_EXAMPLE=ON \
-	-G Ninja
+Summary:    Development package for %name
+Requires:   %name = %version
 
-cd ..
-export CMAKE_BUILD_DIR=build-qt6
-%cmake \
-	-DBUILD_EXAMPLE=ON \
-	-DBUILD_WITH_QT6=ON \
-	-G Ninja
+%description devel
+%summary
 
-%build
-%ninja_build -C build
-%ninja_build -C build-qt6
+%files
+%doc README.md
+%license LICENSE
+%{_libdir}/*
+%{_datadir}/*
 
-%install
-%ninja_install -C build
-%ninja_install -C build-qt6
-%find_lang %{name} --with-qt --all-name
-%libpackages
+%files devel
+%{_includedir}/*
 
-for i in $(ls %{specpartsdir} |grep -v devel); do
-	sed -i -e '/%%package/aRequires: %{name} = %{EVRD}' %{specpartsdir}/$i
-done
-
-%files -f %{name}.lang
