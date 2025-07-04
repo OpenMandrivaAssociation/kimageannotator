@@ -19,7 +19,7 @@ BuildRequires: cmake(Qt6Test)
 BuildRequires: cmake(Qt6Widgets)
 BuildRequires: cmake(Qt6LinguistTools)
 
-%rename %name-Qt6
+%rename kimageannotator
 
 %description
 kImageAnnotator is a tool for annotating images.
