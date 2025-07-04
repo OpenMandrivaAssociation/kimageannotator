@@ -35,9 +35,10 @@ Requires:   %name = %version
 %files
 %doc README.md
 %license LICENSE
-%{_libdir}/*
+%{_libdir}/libkImageAnnotator.so*
 %{_datadir}/*
 
 %files devel
 %{_includedir}/*
-
+%{_libdir}/cmake/*
+%{_libdir}/libkImageAnnotator.so*
