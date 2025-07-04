@@ -1,6 +1,6 @@
 Name:		%{_lib}kImageAnnotator
 Version:	0.7.1
-Release:	1
+Release:	2
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
@@ -19,7 +19,7 @@ BuildRequires: cmake(Qt6Test)
 BuildRequires: cmake(Qt6Widgets)
 BuildRequires: cmake(Qt6LinguistTools)
 
-%rename kimageannotator
+%rename %{_lib}kimageannotator
 
 %description
 kImageAnnotator is a tool for annotating images.
