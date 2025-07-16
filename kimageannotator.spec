@@ -1,6 +1,6 @@
 Name:		%{_lib}kImageAnnotator
 Version:	0.7.1
-Release:	2
+Release:	3
 Summary:	Tool for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
