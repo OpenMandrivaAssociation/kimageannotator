@@ -36,7 +36,7 @@ Library containing tools for annotating images
 
 %package -n %{devname}
 Summary:    Development package for %name
-Requires:   %name = %{EVRD}
+Requires:   %{libname} = %{EVRD}
 Group:	Development/Libraries/C++
 %rename kimageannotator-devel
 %rename %{_lib}kimageannotator-devel
