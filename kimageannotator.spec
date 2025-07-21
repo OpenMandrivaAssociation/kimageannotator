@@ -1,15 +1,18 @@
-Name:		%{_lib}kImageAnnotator
+%define libname %mklibname kImageAnnotator
+%define devname %mklibname -d kImageAnnotator
+
+Name:		kimageannotator
 Version:	0.7.1
-Release:	3
-Summary:	Tool for annotating images
+Release:	4
+Summary:	Library containing tools for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
 URL:		https://github.com/ksnip/kImageAnnotator
 Source:		https://github.com/ksnip/kImageAnnotator/archive/v%{version}/kImageAnnotator-%{version}.tar.gz
 #Patch0:		https://github.com/ksnip/kImageAnnotator/commit/52ed4a9415310ea941aae480cbd777acc37842ac.patch
 
-BuildSystem:	 cmake
-BuildOption:   -DBUILD_EXAMPLE=ON -DBUILD_WITH_QT6=ON
+BuildSystem:	cmake
+BuildOption:	-DBUILD_EXAMPLE=ON -DBUILD_WITH_QT6=ON
 
 BuildRequires: cmake(kColorPicker-Qt6)
 BuildRequires: cmake(Qt6Core)
@@ -19,26 +22,36 @@ BuildRequires: cmake(Qt6Test)
 BuildRequires: cmake(Qt6Widgets)
 BuildRequires: cmake(Qt6LinguistTools)
 
-%rename %{_lib}kimageannotator
-
 %description
-kImageAnnotator is a tool for annotating images.
+Library containing tools for annotating images
 
-%package devel
+%package -n %{libname}
+Summary: Library containing tools for annotating images
+Group: System/Libraries
+%rename %{_lib}kimageannotator
+%rename %{mklibname kImageAnnotator-Qt6}
 
+%description -n %{libname}
+Library containing tools for annotating images
+
+%package -n %{devname}
 Summary:    Development package for %name
-Requires:   %name = %version
+Requires:   %name = %{EVRD}
+Group:	Development/Libraries/C++
+%rename kimageannotator-devel
+%rename %{_lib}kimageannotator-devel
+%rename %{mklibname -d kImageAnnotator-Qt6}
 
-%description devel
+%description -n %{devname}
 %summary
 
-%files
+%files -n %{libname}
 %doc README.md
 %license LICENSE
 %{_libdir}/libkImageAnnotator.so*
 %{_datadir}/*
 
-%files devel
+%files -n %{devname}
 %{_includedir}/*
 %{_libdir}/cmake/*
 %{_libdir}/libkImageAnnotator.so*
