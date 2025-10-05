@@ -3,7 +3,7 @@
 
 Name:		kimageannotator
 Version:	0.7.1
-Release:	4
+Release:	5
 Summary:	Library containing tools for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
@@ -30,6 +30,7 @@ Summary: Library containing tools for annotating images
 Group: System/Libraries
 %rename %{_lib}kimageannotator
 %rename %{mklibname kImageAnnotator-Qt6}
+Obsoletes: kimageannotator < %{EVRD}
 
 %description -n %{libname}
 Library containing tools for annotating images
