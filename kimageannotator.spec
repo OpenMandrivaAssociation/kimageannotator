@@ -2,8 +2,8 @@
 %define devname %mklibname -d kImageAnnotator
 
 Name:		kimageannotator
-Version:	0.7.1
-Release:	5
+Version:	0.7.2
+Release:	1
 Summary:	Library containing tools for annotating images
 License:	GPLv2+
 Group:		Graphical desktop/KDE
